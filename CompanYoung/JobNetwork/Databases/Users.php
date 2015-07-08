@@ -22,12 +22,13 @@ class Users
 	 * @param string $sort_direction
 	 * @param array|null $state
 	 * @param array|null $stateExtra
-	 * @param bool $keepMetaData
+	 * @param string|null $serverTemplate
+	 * @param string|null $ajaxTemplate
 	 * @return array
 	 */
-	public function index($page = 1, $rpp = 10, $sort = 'created_at', $sort_direction = 'desc', $state = null, $stateExtra = null, $keepMetaData = false)
+	public function index($page = 1, $rpp = 10, $sort = 'created_at', $sort_direction = 'desc', $state = null, $stateExtra = null, $serverTemplate = null, $ajaxTemplate = null)
 	{
-		return Call::communicate('GET', $keepMetaData, [
+		return Call::communicate('GET', [
 			"organizations/$this->organizationId/users" => [
 				'page' => $page,
 				'rpp' => $rpp,
@@ -36,7 +37,7 @@ class Users
 				'state' => $state,
 				'stateExtra' => $stateExtra
 			]
-		], null, 'Users.inc');
+		], $serverTemplate, $ajaxTemplate);
 	}
 
 	/**
@@ -44,23 +45,17 @@ class Users
 	 * @param int $organizationId
 	 * @param string $email
 	 * @param string $password
-	 * @param bool $keepMetaData
+	 * @param string|null $serverTemplate
+	 * @param string|null $ajaxTemplate
 	 * @return array
 	 */
-	public function login($organizationId, $email, $password, $keepMetaData = false)
+	public function login($organizationId, $email, $password, $serverTemplate = null, $ajaxTemplate = null)
 	{
-		return Call::communicate('POST', $keepMetaData, [
+		return Call::communicate('POST', [
 			"organizations/$organizationId/users/login" => [
 				'email' => $email,
 				'password' => $password
 			]
-		]);
-	}
-
-	public function all($organizationId, $rpp = 10, $page = 1, $keepMetaData = false)
-	{
-		return Call::communicate('POST', $keepMetaData, [
-			"organizations/$organizationId" => []
-		]);
+		], $serverTemplate, $ajaxTemplate);
 	}
 }

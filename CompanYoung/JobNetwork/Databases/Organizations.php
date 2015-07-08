@@ -20,19 +20,20 @@ class Organizations
 	 * @param int $rpp
 	 * @param string $sort
 	 * @param string $sort_direction
-	 * @param bool $keepMetaData
+	 * @param string|null $serverTemplate
+	 * @param string|null $ajaxTemplate
 	 * @return array
 	 */
-	public function index($page = 1, $rpp = 10, $sort = 'created_at', $sort_direction = 'desc', $keepMetaData = false)
+	public function index($page = 1, $rpp = 10, $sort = 'created_at', $sort_direction = 'desc', $serverTemplate = null, $ajaxTemplate = null)
 	{
-		return Call::communicate('GET', $keepMetaData, [
+		return Call::communicate('GET', [
 			"organizations" => [
 				'page' => $page,
 				'rpp' => $rpp,
 				'sort' => $sort,
 				'sort_direction' => $sort_direction
 			]
-		]);
+		], $serverTemplate, $ajaxTemplate);
 	}
 
 	/**
@@ -45,14 +46,13 @@ class Organizations
 	 * @param int $rpp
 	 * @param string $sort
 	 * @param string $sort_direction
-	 * @param string $serverTemplate
-	 * @param string $ajaxTemplate
-	 * @param bool $keepMetaData
+	 * @param string|null $serverTemplate
+	 * @param string|null $ajaxTemplate
 	 * @return array
 	 */
-	public function search($name = null, $identifiers = null, $subdomains = null, $page = 1, $rpp = 10, $sort = 'created_at', $sort_direction = 'desc', $serverTemplate = null, $ajaxTemplate = null, $keepMetaData = false)
+	public function search($name = null, $identifiers = null, $subdomains = null, $page = 1, $rpp = 10, $sort = 'created_at', $sort_direction = 'desc', $serverTemplate = null, $ajaxTemplate = null)
 	{
-		return Call::communicate('GET', $keepMetaData, [
+		return Call::communicate('GET', [
 			"organizations/search" => [
 				'name' => $name,
 				'identifier' => $identifiers,
@@ -68,14 +68,15 @@ class Organizations
 	/**
 	 * Get a list of all organizations.
 	 *
-	 * @param bool $keepMetaData
+	 * @param string|null $serverTemplate
+	 * @param string|null $ajaxTemplate
 	 * @return array
 	 */
-	public function getAdministrators($keepMetaData = false)
+	public function getAdministrators($serverTemplate = null, $ajaxTemplate = null)
 	{
-		return Call::communicate('GET', $keepMetaData, [
+		return Call::communicate('GET', [
 			"organizations/$this->organizationId/administrators" => []
-		]);
+		], $serverTemplate, $ajaxTemplate);
 	}
 
 
@@ -83,14 +84,15 @@ class Organizations
 	/**
 	 * Get data
 	 *
-	 * @param bool $keepMetaData
+	 * @param string|null $serverTemplate
+	 * @param string|null $ajaxTemplate
 	 * @return array
 	 */
-	public function getInfo($keepMetaData = false)
+	public function getInfo($serverTemplate = null, $ajaxTemplate = null)
 	{
-		return Call::communicate('GET', $keepMetaData, [
+		return Call::communicate('GET', [
 			"organizations/$this->organizationId" => []
-		]);
+		], $serverTemplate, $ajaxTemplate);
 	}
 
 	/**
@@ -104,12 +106,13 @@ class Organizations
 	 * @param string $city
 	 * @param string $address
 	 * @param string $phoneNumber
-	 * @param bool $keepMetaData
+	 * @param string|null $serverTemplate
+	 * @param string|null $ajaxTemplate
 	 * @return array
 	 */
-	public function patchInfo($language_id = null, $name = null, $subdomain = null, $cvr = null, $zipcode = null, $city = null, $address = null, $phoneNumber = null, $keepMetaData = false)
+	public function patchInfo($language_id = null, $name = null, $subdomain = null, $cvr = null, $zipcode = null, $city = null, $address = null, $phoneNumber = null, $serverTemplate = null, $ajaxTemplate = null)
 	{
-		return Call::communicate('PATCH', $keepMetaData, [
+		return Call::communicate('PATCH', [
 			"organizations/$this->organizationId" => [
 				'language_id' => $language_id,
 				'name' => $name,
@@ -120,19 +123,18 @@ class Organizations
 				'address' => $address,
 				'phone_number' => $phoneNumber
 			]
-		]);
+		], $serverTemplate, $ajaxTemplate);
 	}
 
 	/**
 	 * Patch the data
 	 *
 	 * @param array $logo
-	 * @param bool $keepMetaData
 	 * @return array
 	 */
-	public function patchLogo($logo, $keepMetaData = false)
+	public function patchLogo($logo)
 	{
-		return Call::communicate('POST', $keepMetaData, [
+		return Call::communicate('POST', [
 			"organizations/$this->organizationId/logo" => [
 				'logo' => curl_file_create($logo['filename'], $logo['mimetype'], $logo['postname'])
 			]
@@ -151,12 +153,11 @@ class Organizations
 	 * @param string $city
 	 * @param string $address
 	 * @param string $phoneNumber
-	 * @param bool $keepMetaData
 	 * @return array
 	 */
-	public function putInfo($language_id = null, $logo = null,$name = null, $subdomain = null, $cvr = null, $zipcode = null, $city = null, $address = null, $phoneNumber = null, $keepMetaData = false)
+	public function putInfo($language_id = null, $logo = null,$name = null, $subdomain = null, $cvr = null, $zipcode = null, $city = null, $address = null, $phoneNumber = null)
 	{
-		return Call::communicate('OUT', $keepMetaData, [
+		return Call::communicate('PUT', [
 			"organizations/$this->organizationId" => [
 				'language_id' => $language_id,
 				'logo' => $logo,
@@ -175,86 +176,92 @@ class Organizations
 	/**
 	 * Get data
 	 *
-	 * @param bool $keepMetaData
+	 * @param string|null $serverTemplate
+	 * @param string|null $ajaxTemplate
 	 * @return array
 	 */
-	public function types($keepMetaData = false)
+	public function types($serverTemplate = null, $ajaxTemplate = null)
 	{
-		return Call::communicate('GET', $keepMetaData, [
+		return Call::communicate('GET', [
 			"organizations/$this->organizationId/types" => []
-		]);
+		], $serverTemplate, $ajaxTemplate);
 	}
 
 	/**
 	 * Get data
 	 *
-	 * @param bool $keepMetaData
+	 * @param string|null $serverTemplate
+	 * @param string|null $ajaxTemplate
 	 * @return array
 	 */
-	public function countries($keepMetaData = false)
+	public function countries($serverTemplate = null, $ajaxTemplate = null)
 	{
-		return Call::communicate('GET', $keepMetaData, [
+		return Call::communicate('GET', [
 			"organizations/$this->organizationId/countries" => []
-		]);
+		], $serverTemplate, $ajaxTemplate);
 	}
 
 	/**
 	 * Get data
 	 *
 	 * @param int $typeId
-	 * @param bool $keepMetaData
+	 * @param string|null $serverTemplate
+	 * @param string|null $ajaxTemplate
 	 * @return array
 	 */
-	public function regionsByCountry($typeId, $keepMetaData = false)
+	public function regionsByCountry($typeId, $serverTemplate = null, $ajaxTemplate = null)
 	{
-		return Call::communicate('GET', $keepMetaData, [
+		return Call::communicate('GET', [
 			"organizations/$this->organizationId/regionsByCountry" => [
 				'country_id' => $typeId
 			]
-		]);
+		], $serverTemplate, $ajaxTemplate);
 	}
 
 	/**
 	 * Get data
 	 *
 	 * @param int $typeId
-	 * @param bool $keepMetaData
+	 * @param string|null $serverTemplate
+	 * @param string|null $ajaxTemplate
 	 * @return array
 	 */
-	public function categoriesByType($typeId, $keepMetaData = false)
+	public function categoriesByType($typeId, $serverTemplate = null, $ajaxTemplate = null)
 	{
-		return Call::communicate('GET', $keepMetaData, [
+		return Call::communicate('GET', [
 			"organizations/$this->organizationId/categoriesByType" => [
 				'type_id' => $typeId
 			]
-		]);
+		], $serverTemplate, $ajaxTemplate);
 	}
 
 
 	/**
 	 * Get data
 	 *
-	 * @param bool $keepMetaData
+	 * @param string|null $serverTemplate
+	 * @param string|null $ajaxTemplate
 	 * @return array
 	 */
-	public function totalPositions($keepMetaData = false)
+	public function totalPositions($serverTemplate = null, $ajaxTemplate = null)
 	{
-		return Call::communicate('GET', $keepMetaData, [
+		return Call::communicate('GET', [
 			"organizations/$this->organizationId/totalPositions" => []
-		]);
+		], $serverTemplate, $ajaxTemplate);
 	}
 
 	/**
 	 * Get data
 	 *
-	 * @param bool $keepMetaData
+	 * @param string|null $serverTemplate
+	 * @param string|null $ajaxTemplate
 	 * @return array
 	 */
-	public function totalGeographies($keepMetaData = false)
+	public function totalGeographies($serverTemplate = null, $ajaxTemplate = null)
 	{
-		return Call::communicate('GET', $keepMetaData, [
+		return Call::communicate('GET', [
 			"organizations/$this->organizationId/totalGeographies" => []
-		]);
+		], $serverTemplate, $ajaxTemplate);
 	}
 
 
@@ -264,12 +271,11 @@ class Organizations
 	 * Add new country.
 	 *
 	 * @param string $name
-	 * @param bool $keepMetaData
 	 * @return array
 	 */
-	public function addCountry($name, $keepMetaData = false)
+	public function addCountry($name)
 	{
-		return Call::communicate('POST', $keepMetaData, [
+		return Call::communicate('POST', [
 			"organizations/$this->organizationId/countries" => [
 				'name' => $name
 			]
@@ -281,12 +287,11 @@ class Organizations
 	 *
 	 * @param integer $id
 	 * @param string $name
-	 * @param bool $keepMetaData
 	 * @return array
 	 */
-	public function editCountry($id, $name, $keepMetaData = false)
+	public function editCountry($id, $name)
 	{
-		return Call::communicate('PATCH', $keepMetaData, [
+		return Call::communicate('PATCH', [
 			"organizations/$this->organizationId/countries/$id" => [
 				'name' => $name
 			]
@@ -297,12 +302,11 @@ class Organizations
 	 * Add new country.
 	 *
 	 * @param integer $id
-	 * @param bool $keepMetaData
 	 * @return array
 	 */
-	public function deleteCountry($id, $keepMetaData = false)
+	public function deleteCountry($id)
 	{
-		return Call::communicate('DELETE', $keepMetaData, [
+		return Call::communicate('DELETE', [
 			"organizations/$this->organizationId/countries" => [
 				'idList' => [
 					$id
@@ -319,12 +323,11 @@ class Organizations
 	 *
 	 * @param integer $countryId
 	 * @param string $name
-	 * @param bool $keepMetaData
 	 * @return array
 	 */
-	public function addRegion($countryId, $name, $keepMetaData = false)
+	public function addRegion($countryId, $name)
 	{
-		return Call::communicate('POST', $keepMetaData, [
+		return Call::communicate('POST', [
 			"organizations/$this->organizationId/regions" => [
 				'country_id' => $countryId,
 				'name' => $name
@@ -337,12 +340,11 @@ class Organizations
 	 *
 	 * @param integer $id
 	 * @param string $name
-	 * @param bool $keepMetaData
 	 * @return array
 	 */
-	public function editRegion($id, $name, $keepMetaData = false)
+	public function editRegion($id, $name)
 	{
-		return Call::communicate('PATCH', $keepMetaData, [
+		return Call::communicate('PATCH', [
 			"organizations/$this->organizationId/regions/$id" => [
 				'name' => $name
 			]
@@ -353,12 +355,11 @@ class Organizations
 	 * Add new country.
 	 *
 	 * @param integer $id
-	 * @param bool $keepMetaData
 	 * @return array
 	 */
-	public function deleteRegion($id, $keepMetaData = false)
+	public function deleteRegion($id)
 	{
-		return Call::communicate('DELETE', $keepMetaData, [
+		return Call::communicate('DELETE', [
 			"organizations/$this->organizationId/regions" => [
 				'idList' => [
 					$id
@@ -375,12 +376,11 @@ class Organizations
 	 *
 	 * @param integer $regionId
 	 * @param string $name
-	 * @param bool $keepMetaData
 	 * @return array
 	 */
-	public function addGeography($regionId, $name, $keepMetaData = false)
+	public function addGeography($regionId, $name)
 	{
-		return Call::communicate('POST', $keepMetaData, [
+		return Call::communicate('POST', [
 			"organizations/$this->organizationId/geographies" => [
 				'region_id' => $regionId,
 				'name' => $name
@@ -393,12 +393,11 @@ class Organizations
 	 *
 	 * @param integer $id
 	 * @param string $name
-	 * @param bool $keepMetaData
 	 * @return array
 	 */
-	public function editGeography($id, $name, $keepMetaData = false)
+	public function editGeography($id, $name)
 	{
-		return Call::communicate('PATCH', $keepMetaData, [
+		return Call::communicate('PATCH', [
 			"organizations/$this->organizationId/geographies/$id" => [
 				'name' => $name
 			]
@@ -409,12 +408,11 @@ class Organizations
 	 * Add new country.
 	 *
 	 * @param integer $id
-	 * @param bool $keepMetaData
 	 * @return array
 	 */
-	public function deleteGeography($id, $keepMetaData = false)
+	public function deleteGeography($id)
 	{
-		return Call::communicate('DELETE', $keepMetaData, [
+		return Call::communicate('DELETE', [
 			"organizations/$this->organizationId/geographies" => [
 				'idList' => [
 					$id
@@ -430,12 +428,11 @@ class Organizations
 	 * Add new type.
 	 *
 	 * @param string $name
-	 * @param bool $keepMetaData
 	 * @return array
 	 */
-	public function addType($name, $keepMetaData = false)
+	public function addType($name)
 	{
-		return Call::communicate('POST', $keepMetaData, [
+		return Call::communicate('POST', [
 			"organizations/$this->organizationId/types" => [
 				'name' => $name
 			]
@@ -447,12 +444,11 @@ class Organizations
 	 *
 	 * @param integer $id
 	 * @param string $name
-	 * @param bool $keepMetaData
 	 * @return array
 	 */
-	public function editType($id, $name, $keepMetaData = false)
+	public function editType($id, $name)
 	{
-		return Call::communicate('PATCH', $keepMetaData, [
+		return Call::communicate('PATCH', [
 			"organizations/$this->organizationId/types/$id" => [
 				'name' => $name
 			]
@@ -463,12 +459,11 @@ class Organizations
 	 * Add new country.
 	 *
 	 * @param integer $id
-	 * @param bool $keepMetaData
 	 * @return array
 	 */
-	public function deleteType($id, $keepMetaData = false)
+	public function deleteType($id)
 	{
-		return Call::communicate('DELETE', $keepMetaData, [
+		return Call::communicate('DELETE', [
 			"organizations/$this->organizationId/types" => [
 				'idList' => [
 					$id
@@ -485,12 +480,11 @@ class Organizations
 	 *
 	 * @param integer $typeId
 	 * @param string $name
-	 * @param bool $keepMetaData
 	 * @return array
 	 */
-	public function addCategory($typeId, $name, $keepMetaData = false)
+	public function addCategory($typeId, $name)
 	{
-		return Call::communicate('POST', $keepMetaData, [
+		return Call::communicate('POST', [
 			"organizations/$this->organizationId/categories" => [
 				'type_id' => $typeId,
 				'name' => $name
@@ -503,12 +497,11 @@ class Organizations
 	 *
 	 * @param integer $id
 	 * @param string $name
-	 * @param bool $keepMetaData
 	 * @return array
 	 */
-	public function editCategory($id, $name, $keepMetaData = false)
+	public function editCategory($id, $name)
 	{
-		return Call::communicate('PATCH', $keepMetaData, [
+		return Call::communicate('PATCH', [
 			"organizations/$this->organizationId/categories/$id" => [
 				'name' => $name
 			]
@@ -519,12 +512,11 @@ class Organizations
 	 * Delete category.
 	 *
 	 * @param integer $id
-	 * @param bool $keepMetaData
 	 * @return array
 	 */
-	public function deleteCategory($id, $keepMetaData = false)
+	public function deleteCategory($id)
 	{
-		return Call::communicate('DELETE', $keepMetaData, [
+		return Call::communicate('DELETE', [
 			"organizations/$this->organizationId/categories" => [
 				'idList' => [
 					$id
@@ -541,12 +533,11 @@ class Organizations
 	 *
 	 * @param integer $categoryId
 	 * @param string $name
-	 * @param bool $keepMetaData
 	 * @return array
 	 */
-	public function addPosition($categoryId, $name, $keepMetaData = false)
+	public function addPosition($categoryId, $name)
 	{
-		return Call::communicate('POST', $keepMetaData, [
+		return Call::communicate('POST', [
 			"organizations/$this->organizationId/positions" => [
 				'category_id' => $categoryId,
 				'name' => $name
@@ -559,12 +550,11 @@ class Organizations
 	 *
 	 * @param integer $id
 	 * @param string $name
-	 * @param bool $keepMetaData
 	 * @return array
 	 */
-	public function editPosition($id, $name, $keepMetaData = false)
+	public function editPosition($id, $name)
 	{
-		return Call::communicate('PATCH', $keepMetaData, [
+		return Call::communicate('PATCH', [
 			"organizations/$this->organizationId/positions/$id" => [
 				'name' => $name
 			]
@@ -575,12 +565,11 @@ class Organizations
 	 * Delete position.
 	 *
 	 * @param integer $id
-	 * @param bool $keepMetaData
 	 * @return array
 	 */
-	public function deletePosition($id, $keepMetaData = false)
+	public function deletePosition($id)
 	{
-		return Call::communicate('DELETE', $keepMetaData, [
+		return Call::communicate('DELETE', [
 			"organizations/$this->organizationId/positions" => [
 				'idList' => [
 					$id

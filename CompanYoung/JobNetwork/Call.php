@@ -8,7 +8,7 @@ class Call
 {
 	protected static $locale = 'da';
 
-	public static function communicate($method, $keepMetaData, $uris, $serverTemplate = null, $ajaxTemplate = null, $single = false)
+	public static function communicate($method, $uris, $serverTemplate = null, $ajaxTemplate = null, $single = false)
 	{
 		foreach($uris as $uri => $data)
 		{
@@ -69,9 +69,6 @@ class Call
 			// execute the handler
 			$result = curl_exec($handler);
 			$decoded = json_decode($result, true);
-
-//			var_dump($uri);
-//			var_dump($result);
 
 			if(empty($decoded))
 			{

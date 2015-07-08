@@ -47,7 +47,7 @@ class Api
 	 */
 	private $users;
 
-	function __construct($specialSlug = null, $key = null, $apiVersion = 'v1')
+	function __construct($key = null, $apiVersion = 'v1')
 	{
 		require_once('Call.php');
 		require_once('Databases/Companies.php');

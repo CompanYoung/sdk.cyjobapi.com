@@ -8,13 +8,16 @@ class Jobagents
 {
 	/**
 	 * Display a Person by ID.
+	 *
 	 * @param int $id
-	 * @param int $version
+	 * @param string|null $serverTemplate
+	 * @param string|null $ajaxTemplate
 	 * @return array
 	 */
-	public function get($id, $keepMetaData = false, $version = 1)
+	public function get($id, $serverTemplate = null, $ajaxTemplate = null)
 	{
-		return Call::communicate($keepMetaData, $version, [ "organization/$organization_id" ], $this->table);
-//        return $this->call([ "jobs/$id" => [] ], $version);
+		return Call::communicate('GET', [
+			"organizations/$this->organizationId" => []
+		], $serverTemplate, $ajaxTemplate);
 	}
 }

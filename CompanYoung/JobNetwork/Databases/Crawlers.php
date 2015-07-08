@@ -20,19 +20,20 @@ class Crawlers
 	 * @param int $rpp
 	 * @param string $sort
 	 * @param string $sort_direction
-	 * @param bool $keepMetaData
+	 * @param string|null $serverTemplate
+	 * @param string|null $ajaxTemplate
 	 * @return array
 	 */
-	public function index($page = 1, $rpp = 10, $sort = 'created_at', $sort_direction = 'desc', $keepMetaData = false)
+	public function index($page = 1, $rpp = 10, $sort = 'created_at', $sort_direction = 'desc', $serverTemplate = null, $ajaxTemplate = null)
 	{
-		return Call::communicate('GET', $keepMetaData, [
+		return Call::communicate('GET', [
 			"organizations/$this->organizationId/crawlers" => [
 				'page' => $page,
 				'rpp' => $rpp,
 				'sort' => $sort,
 				'sort_direction' => $sort_direction
 			]
-		], null, 'Setup/Crawlers.inc');
+		], $serverTemplate, $ajaxTemplate);
 	}
 
 	/**
@@ -42,33 +43,33 @@ class Crawlers
 	 * @param int $rpp
 	 * @param string $sort
 	 * @param string $sort_direction
-	 * @param bool $keepMetaData
+	 * @param string|null $serverTemplate
+	 * @param string|null $ajaxTemplate
 	 * @return array
 	 */
-	public function results($page = 1, $rpp = 10, $sort = 'created_at', $sort_direction = 'desc', $keepMetaData = false)
+	public function results($page = 1, $rpp = 10, $sort = 'created_at', $sort_direction = 'desc', $serverTemplate = null, $ajaxTemplate = null)
 	{
-		return Call::communicate('GET', $keepMetaData, [
+		return Call::communicate('GET', [
 			"organizations/$this->organizationId/crawlers/results" => [
 				'page' => $page,
 				'rpp' => $rpp,
 				'sort' => $sort,
 				'sort_direction' => $sort_direction
 			]
-		], null, 'Jobs/Crawler.inc');
+		], $serverTemplate, $ajaxTemplate);
 	}
 
 	/**
 	 * Get a list of all crawler results.
 	 *
 	 * @param int $id
-	 * @param string $serverTemplate
-	 * @param string $ajaxTemplate
-	 * @param bool $keepMetaData
+	 * @param string|null $serverTemplate
+	 * @param string|null $ajaxTemplate
 	 * @return array
 	 */
-	public function findResult($id, $serverTemplate = null, $ajaxTemplate = null, $keepMetaData = false)
+	public function findResult($id, $serverTemplate = null, $ajaxTemplate = null)
 	{
-		return Call::communicate('GET', $keepMetaData, [
+		return Call::communicate('GET', [
 			"organizations/$this->organizationId/crawlers/results/$id" => []
 		], $serverTemplate, $ajaxTemplate, true);
 	}
@@ -77,12 +78,11 @@ class Crawlers
 	 * Set the crawler active.
 	 *
 	 * @param int $crawlerId
-	 * @param bool $keepMetaData
 	 * @return array
 	 */
-	public function setActive($crawlerId, $keepMetaData = false)
+	public function setActive($crawlerId)
 	{
-		return Call::communicate('PATCH', $keepMetaData, [
+		return Call::communicate('PATCH', [
 			"organizations/$this->organizationId/crawlers/$crawlerId/setActive" => []
 		]);
 	}
@@ -91,12 +91,11 @@ class Crawlers
 	 * Set the crawler inactive.
 	 *
 	 * @param int $crawlerId
-	 * @param bool $keepMetaData
 	 * @return array
 	 */
-	public function setInactive($crawlerId, $keepMetaData = false)
+	public function setInactive($crawlerId)
 	{
-		return Call::communicate('PATCH', $keepMetaData, [
+		return Call::communicate('PATCH', [
 			"organizations/$this->organizationId/crawlers/$crawlerId/setInactive" => []
 		]);
 	}

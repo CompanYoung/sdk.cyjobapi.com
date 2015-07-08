@@ -9,52 +9,56 @@ class System
 	/**
 	 * Get data
 	 *
-	 * @param bool $keepMetaData
+	 * @param string|null $serverTemplate
+	 * @param string|null $ajaxTemplate
 	 * @return array
 	 */
-	public function applicationMethods($keepMetaData = false)
+	public function applicationMethods($serverTemplate = null, $ajaxTemplate = null)
 	{
-		return Call::communicate('GET', $keepMetaData, [
+		return Call::communicate('GET', [
 			"system/applicationMethods" => []
-		]);
+		], $serverTemplate, $ajaxTemplate);
 	}
 
 	/**
 	 * Get a list of all crawlers.
 	 *
-	 * @param bool $keepMetaData
+	 * @param string|null $serverTemplate
+	 * @param string|null $ajaxTemplate
 	 * @return array
 	 */
-	public function crawlers($keepMetaData = false)
+	public function crawlers($serverTemplate = null, $ajaxTemplate = null)
 	{
-		return Call::communicate('GET', $keepMetaData, [
+		return Call::communicate('GET', [
 			"system/crawlers" => []
-		], null, 'Setup/Crawlers.inc');
+		], $serverTemplate, $ajaxTemplate);
 	}
 
 	/**
 	 * Get data
 	 *
-	 * @param bool $keepMetaData
+	 * @param string|null $serverTemplate
+	 * @param string|null $ajaxTemplate
 	 * @return array
 	 */
-	public function hiringMethods($keepMetaData = false)
+	public function hiringMethods($serverTemplate = null, $ajaxTemplate = null)
 	{
-		return Call::communicate('GET', $keepMetaData, [
+		return Call::communicate('GET', [
 			"system/hiringMethods" => []
-		]);
+		], $serverTemplate, $ajaxTemplate);
 	}
 
 	/**
 	 * Get a list of all organizations.
 	 *
-	 * @param bool $keepMetaData
+	 * @param string|null $serverTemplate
+	 * @param string|null $ajaxTemplate
 	 * @return array
 	 */
-	public function languages($keepMetaData = false)
+	public function languages($serverTemplate = null, $ajaxTemplate = null)
 	{
-		return Call::communicate('GET', $keepMetaData, [
+		return Call::communicate('GET', [
 			"system/languages" => []
-		]);
+		], $serverTemplate, $ajaxTemplate);
 	}
 }

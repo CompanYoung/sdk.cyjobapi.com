@@ -22,12 +22,13 @@ class Posts
 	 * @param string $sort_direction
 	 * @param array|null $state
 	 * @param array|null $stateExtra
-	 * @param bool $keepMetaData
+	 * @param string|null $serverTemplate
+	 * @param string|null $ajaxTemplate
 	 * @return array
 	 */
-	public function index($page = 1, $rpp = 10, $sort = 'created_at', $sort_direction = 'desc', $state = null, $stateExtra = null, $keepMetaData = false)
+	public function index($page = 1, $rpp = 10, $sort = 'created_at', $sort_direction = 'desc', $state = null, $stateExtra = null, $serverTemplate = null, $ajaxTemplate = null)
 	{
-		return Call::communicate('GET', $keepMetaData, [
+		return Call::communicate('GET', [
 			"organizations/$this->organizationId/posts" => [
 				'page' => $page,
 				'rpp' => $rpp,
@@ -36,7 +37,7 @@ class Posts
 				'state' => $state,
 				'stateExtra' => $stateExtra
 			]
-		], null, 'Posts.inc');
+		], $serverTemplate, $ajaxTemplate);
 	}
 
 	/**
@@ -63,12 +64,13 @@ class Posts
 	 * @param int $rpp
 	 * @param string $sort
 	 * @param string $sort_direction
-	 * @param bool $keepMetaData
+	 * @param string|null $serverTemplate
+	 * @param string|null $ajaxTemplate
 	 * @return array
 	 */
-	public function search($title = null, $text = null, $types = null, $type_names = null, $categories = null, $category_names = null, $positions = null, $position_names = null, $countries = null, $country_names = null, $regions = null, $region_names = null, $geographies = null, $geography_names = null, $deadline_at = null, $inactive_at = null, $created_at = null, $page = 1, $rpp = 10, $sort = 'created_at', $sort_direction = 'desc', $keepMetaData = false)
+	public function search($title = null, $text = null, $types = null, $type_names = null, $categories = null, $category_names = null, $positions = null, $position_names = null, $countries = null, $country_names = null, $regions = null, $region_names = null, $geographies = null, $geography_names = null, $deadline_at = null, $inactive_at = null, $created_at = null, $page = 1, $rpp = 10, $sort = 'created_at', $sort_direction = 'desc', $serverTemplate = null, $ajaxTemplate = null)
 	{
-		return Call::communicate('GET', $keepMetaData, [
+		return Call::communicate('GET', [
 			"organizations/$this->organizationId/posts/search" => [
 				'title' => $title,
 				'text' => $text,
@@ -92,20 +94,22 @@ class Posts
 				'sort' => $sort,
 				'sort_direction' => $sort_direction
 			]
-		], null, 'Posts.inc');
+		], $serverTemplate, $ajaxTemplate);
 	}
 
 	/**
 	 * Get data
 	 *
-	 * @param bool $keepMetaData
+	 * @param int $postId
+	 * @param string|null $serverTemplate
+	 * @param string|null $ajaxTemplate
 	 * @return array
 	 */
-	public function find($postId, $keepMetaData = false)
+	public function find($postId, $serverTemplate = null, $ajaxTemplate = null)
 	{
-		return Call::communicate('GET', $keepMetaData, [
+		return Call::communicate('GET', [
 			"organizations/$this->organizationId/posts/$postId" => []
-		]);
+		], $serverTemplate, $ajaxTemplate);
 	}
 
 	/**
@@ -126,12 +130,11 @@ class Posts
 	 * @param string $inactive_at
 	 * @param array $positions
 	 * @param array $geographies
-	 * @param bool $keepMetaData
 	 * @return array
 	 */
-	public function insert($company_id, $application_method_id, $application_method_content, $language, $title, $html, $zipcode, $city, $cover = null, $deadline_at, $hiring_method_id, $hired_at, $inactive_at, $positions, $geographies, $keepMetaData = false)
+	public function insert($company_id, $application_method_id, $application_method_content, $language, $title, $html, $zipcode, $city, $cover = null, $deadline_at, $hiring_method_id, $hired_at, $inactive_at, $positions, $geographies)
 	{
-		return Call::communicate('POST', $keepMetaData, [
+		return Call::communicate('POST', [
 			"organizations/$this->organizationId/posts" => [
 				'company_id' => $company_id,
 				'application_method_id' => $application_method_id,
@@ -170,12 +173,11 @@ class Posts
 	 * @param string $inactive_at
 	 * @param array $positions
 	 * @param array $geographies
-	 * @param bool $keepMetaData
 	 * @return array
 	 */
-	public function patchUpdate($postId, $company_id, $application_method_id, $application_method_content, $language, $title, $html, $zipcode, $city, $deadline_at, $hiring_method_id, $hired_at, $inactive_at, $positions, $geographies, $keepMetaData = false)
+	public function patchUpdate($postId, $company_id, $application_method_id, $application_method_content, $language, $title, $html, $zipcode, $city, $deadline_at, $hiring_method_id, $hired_at, $inactive_at, $positions, $geographies)
 	{
-		return Call::communicate('PATCH', $keepMetaData, [
+		return Call::communicate('PATCH', [
 			"organizations/$this->organizationId/posts/$postId" => [
 				'company_id' => $company_id,
 				'application_method_id' => $application_method_id,
@@ -200,12 +202,11 @@ class Posts
 	 *
 	 * @param int $postId
 	 * @param array $cover
-	 * @param bool $keepMetaData
 	 * @return array
 	 */
-	public function patchCover($postId, $cover, $keepMetaData = false)
+	public function patchCover($postId, $cover)
 	{
-		return Call::communicate('POST', $keepMetaData, [
+		return Call::communicate('POST', [
 			"organizations/$this->organizationId/posts/$postId/cover" => [
 				'cover' => curl_file_create($cover['filename'], $cover['mimetype'], $cover['postname']),
 			]
@@ -216,12 +217,11 @@ class Posts
 	 * Activate the job.
 	 *
 	 * @param int $postId
-	 * @param bool $keepMetaData
 	 * @return array
 	 */
-	public function activate($postId, $keepMetaData = false)
+	public function activate($postId)
 	{
-		return Call::communicate('PATCH', $keepMetaData, [
+		return Call::communicate('PATCH', [
 			"organizations/$this->organizationId/posts/$postId/activate" => []
 		]);
 	}
@@ -230,12 +230,11 @@ class Posts
 	 * Deactivate the job.
 	 *
 	 * @param int $postId
-	 * @param bool $keepMetaData
 	 * @return array
 	 */
-	public function deactivate($postId, $keepMetaData = false)
+	public function deactivate($postId)
 	{
-		return Call::communicate('PATCH', $keepMetaData, [
+		return Call::communicate('PATCH', [
 			"organizations/$this->organizationId/posts/$postId/deactivate" => []
 		]);
 	}
@@ -244,13 +243,14 @@ class Posts
 	 * Get the job statistics.
 	 *
 	 * @param int $postId
-	 * @param bool $keepMetaData
+	 * @param string|null $serverTemplate
+	 * @param string|null $ajaxTemplate
 	 * @return array
 	 */
-	public function statistics($postId, $keepMetaData = false)
+	public function statistics($postId, $serverTemplate = null, $ajaxTemplate = null)
 	{
-		return Call::communicate('GET', $keepMetaData, [
+		return Call::communicate('GET', [
 			"organizations/$this->organizationId/posts/$postId/statistics" => []
-		]);
+		], $serverTemplate, $ajaxTemplate);
 	}
 }
