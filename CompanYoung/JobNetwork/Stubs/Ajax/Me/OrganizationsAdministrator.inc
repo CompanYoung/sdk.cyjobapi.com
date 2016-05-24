@@ -8,7 +8,7 @@ return '
             <div class="row heading">
                 <div class="col-md-5 organization-logo">
                 	<div>
-						<img src="{logo}" />
+						<img src="{logo.size100}" class="img-circle" />
 					</div>
                 </div>
 

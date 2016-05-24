@@ -2,7 +2,8 @@
 
 return '
 <tr data-id="{id}">
-    <td><img src="{company.logo.url}" class="img-circle" style="width:50px;max-height:50px;"> <a href="/jobs/{id}/company-info">{title}</a></td>
+    <td><img src="{company.logo.size50}" class="img-circle" style="width:50px;max-height:50px;"> </td>
+	<td><a href="/jobs/{id}/company-info">{title}</a></td>
     <td>{company.name}</td>
     <td>{status}</td>
     <td>{created_at}</td>

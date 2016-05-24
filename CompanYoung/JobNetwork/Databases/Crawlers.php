@@ -14,75 +14,114 @@ class Crawlers
 	}
 
 	/**
-	 * Get a list of all crawlers.
+	 * Delete the data
 	 *
-	 * @param int $page
-	 * @param int $rpp
-	 * @param string $sort
-	 * @param string $sort_direction
-	 * @param bool $keepMetaData
+	 * @param int $crawlerResultId
 	 * @return array
 	 */
-	public function index($page = 1, $rpp = 10, $sort = 'created_at', $sort_direction = 'desc', $keepMetaData = false)
+	public function deletePost($crawlerResultId)
 	{
-		return Call::communicate('GET', $keepMetaData, [
-			"organizations/$this->organizationId/crawlers" => [
-				'page' => $page,
-				'rpp' => $rpp,
-				'sort' => $sort,
-				'sort_direction' => $sort_direction
-			]
-		], null, 'Setup/Crawlers.inc');
+		return Call::communicate('DELETE', [
+			"organizations/$this->organizationId/crawlers/posts/$crawlerResultId" => []
+		]);
+	}
+
+	/**
+	 * Get a list of all crawlers.
+	 *
+	 * @param array $data
+	 * @param array|null $serverTemplate
+	 * @param array|null $ajaxTemplate
+	 * @return array
+	 */
+	public function index(array $data, $serverTemplate = null, $ajaxTemplate = null)
+	{
+		return Call::communicate('GET', [
+			"organizations/$this->organizationId/crawlers" => $data
+		], $serverTemplate, $ajaxTemplate);
+	}
+
+	/**
+	 * Get a list of all crawler categories.
+	 *
+	 * @param array|null $serverTemplate
+	 * @param array|null $ajaxTemplate
+	 * @return array
+	 */
+	public function showAll($serverTemplate = null, $ajaxTemplate = null)
+	{
+		return Call::communicate('GET', [
+			"organizations/$this->organizationId/crawlers/all" => []
+		], $serverTemplate, $ajaxTemplate);
+	}
+
+	/**
+	 * Get a list of all crawler categories.
+	 *
+	 * @param array|null $serverTemplate
+	 * @param array|null $ajaxTemplate
+	 * @return array
+	 */
+	public function categories($serverTemplate = null, $ajaxTemplate = null)
+	{
+		return Call::communicate('GET', [
+			"organizations/$this->organizationId/crawlers/categories" => []
+		], $serverTemplate, $ajaxTemplate);
 	}
 
 	/**
 	 * Get a list of all crawler results.
 	 *
-	 * @param int $page
-	 * @param int $rpp
-	 * @param string $sort
-	 * @param string $sort_direction
-	 * @param bool $keepMetaData
+	 * @param array $data
+	 * @param array|null $serverTemplate
+	 * @param array|null $ajaxTemplate
 	 * @return array
 	 */
-	public function results($page = 1, $rpp = 10, $sort = 'created_at', $sort_direction = 'desc', $keepMetaData = false)
+	public function results(array $data, $serverTemplate = null, $ajaxTemplate = null)
 	{
-		return Call::communicate('GET', $keepMetaData, [
-			"organizations/$this->organizationId/crawlers/results" => [
-				'page' => $page,
-				'rpp' => $rpp,
-				'sort' => $sort,
-				'sort_direction' => $sort_direction
-			]
-		], null, 'Jobs/Crawler.inc');
+		return Call::communicate('GET', [
+			"organizations/$this->organizationId/crawlers/results" => $data
+		], $serverTemplate, $ajaxTemplate);
 	}
 
 	/**
 	 * Get a list of all crawler results.
 	 *
 	 * @param int $id
-	 * @param string $serverTemplate
-	 * @param string $ajaxTemplate
-	 * @param bool $keepMetaData
+	 * @param array|null $serverTemplate
+	 * @param array|null $ajaxTemplate
 	 * @return array
 	 */
-	public function findResult($id, $serverTemplate = null, $ajaxTemplate = null, $keepMetaData = false)
+	public function findResult($id, $serverTemplate = null, $ajaxTemplate = null)
 	{
-		return Call::communicate('GET', $keepMetaData, [
+		return Call::communicate('GET', [
 			"organizations/$this->organizationId/crawlers/results/$id" => []
 		], $serverTemplate, $ajaxTemplate, true);
+	}
+
+	/**
+	 * Patch the data
+	 *
+	 * @param int $crawlerResultId
+	 * @param array $data
+	 * @return array
+	 */
+	public function patchPost($crawlerResultId, array $data)
+	{
+		return Call::communicate('PATCH', [
+			"organizations/$this->organizationId/crawlers/posts/$crawlerResultId" => $data
+		]);
 	}
 
 	/**
 	 * Set the crawler active.
 	 *
 	 * @param int $crawlerId
-	 * @param bool $keepMetaData
 	 * @return array
 	 */
-	public function setActive($crawlerId, $keepMetaData = false)
+	public function setActive($crawlerId)
 	{
-		return Call::communicate('PATCH', $keepMetaData, [
+		return Call::communicate('PATCH', [
 			"organizations/$this->organizationId/crawlers/$crawlerId/setActive" => []
 		]);
 	}
@@ -91,13 +130,25 @@ class Crawlers
 	 * Set the crawler inactive.
 	 *
 	 * @param int $crawlerId
-	 * @param bool $keepMetaData
 	 * @return array
 	 */
-	public function setInactive($crawlerId, $keepMetaData = false)
+	public function setInactive($crawlerId)
 	{
-		return Call::communicate('PATCH', $keepMetaData, [
+		return Call::communicate('PATCH', [
 			"organizations/$this->organizationId/crawlers/$crawlerId/setInactive" => []
+		]);
+	}
+
+	/**
+	 * Post the data
+	 *
+	 * @param array $data
+	 * @return array
+	 */
+	public function insertPost(array $data)
+	{
+		return Call::communicate('POST', [
+			"organizations/$this->organizationId/crawlers/posts" => $data
 		]);
 	}
 }

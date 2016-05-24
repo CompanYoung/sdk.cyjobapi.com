@@ -2,6 +2,7 @@
 
 namespace App\CompanYoung\JobNetwork;
 
+use App\CompanYoung\Call;
 use App\CompanYoung\JobNetwork\Databases;
 
 /**
@@ -10,7 +11,12 @@ use App\CompanYoung\JobNetwork\Databases;
  */
 class Api
 {
-	protected $organizationId 	= null;
+	protected $organizationId = null;
+
+	/**
+	 * @var Databases\Administrators
+	 */
+	private $administrators;
 
 	/**
 	 * @var Databases\Companies
@@ -18,9 +24,19 @@ class Api
 	private $companies;
 
 	/**
+	 * @var Databases\Contacts
+	 */
+	private $contacts;
+
+	/**
 	 * @var Databases\Crawlers
 	 */
 	private $crawlers;
+
+	/**
+	 * @var Databases\Emails
+	 */
+	private $emails;
 
 	/**
 	 * @var Databases\Jobagents
@@ -47,21 +63,38 @@ class Api
 	 */
 	private $users;
 
-	function __construct($specialSlug = null, $key = null, $apiVersion = 'v1')
+	function __construct($specialSlug = null, $key = null)
 	{
 		require_once('Call.php');
 		require_once('Databases/Companies.php');
+		require_once('Databases/Contacts.php');
 		require_once('Databases/Crawlers.php');
+		require_once('Databases/Emails.php');
 		require_once('Databases/Jobagents.php');
 		require_once('Databases/Organizations.php');
 		require_once('Databases/Posts.php');
 		require_once('Databases/System.php');
 		require_once('Databases/Users.php');
 
-		$this->boot($key, $apiVersion);
+		if($specialSlug and in_array(env('DOMAIN'), [ 'cyjobapi.dev', 'cyjobapi.com' ]))
+		{
+			$_ENV['CYJOBAPI_SIGNED'] = '4bf4210022fb66494edb587aff5b30fa';
+
+			$result = Call::communicate('GET', [
+				"organizations/search" => [
+					'subdomain' => [ $specialSlug ]
+				]
+			]);
+
+			$this->organizationId 	= $result['data'][0]['id'];
+		}
+		else
+		{
+			$this->boot($key);
+		}
 	}
 
-	public function boot($key = null, $apiVersion = 'v1')
+	public function boot($key = null)
 	{
 		$authorization = base64_decode(
 			$key ? $key : $_ENV['CYJOBAPI_AUTHORIZATION']
@@ -76,8 +109,21 @@ class Api
 
 		if(!isset($_ENV['CYJOBAPI_URL']))
 		{
-			$_ENV['CYJOBAPI_URL'] = "http://api.cyjobapi.com/$apiVersion";
+			$_ENV['CYJOBAPI_URL'] = "http://v1.api.cyjobapi.com";
 		}
+	}
+
+	/**
+	 * @return Databases\Companies
+	 */
+	public function administrators()
+	{
+		if(empty($this->administrators))
+		{
+			$this->administrators = new Databases\Administrators($this->organizationId);
+		}
+
+		return $this->administrators;
 	}
 
 	/**
@@ -94,6 +140,19 @@ class Api
 	}
 
 	/**
+	 * @return Databases\Contacts
+	 */
+	public function contacts()
+	{
+		if(empty($this->contacts))
+		{
+			$this->contacts = new Databases\Contacts($this->organizationId);
+		}
+
+		return $this->contacts;
+	}
+
+	/**
 	 * @return Databases\Crawlers
 	 */
 	public function crawlers()
@@ -104,6 +163,19 @@ class Api
 		}
 
 		return $this->crawlers;
+	}
+
+	/**
+	 * @return Databases\Emails
+	 */
+	public function emails()
+	{
+		if(empty($this->emails))
+		{
+			$this->emails = new Databases\Emails($this->organizationId);
+		}
+
+		return $this->emails;
 	}
 
 	/**
@@ -152,7 +224,7 @@ class Api
 	{
 		if(empty($this->system))
 		{
-			$this->system = new Databases\System();
+			$this->system = new Databases\System($this->organizationId);
 		}
 
 		return $this->system;

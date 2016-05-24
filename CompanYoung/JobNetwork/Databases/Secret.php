@@ -4,7 +4,7 @@ namespace App\CompanYoung\JobNetwork\Databases;
 
 use App\CompanYoung\Call;
 
-class System
+class Secret
 {
 	private $organizationId = 0;
 
@@ -31,20 +31,6 @@ class System
 	}
 
 	/**
-	 * Get data
-	 *
-	 * @param string|null $serverTemplate
-	 * @param string|null $ajaxTemplate
-	 * @return array
-	 */
-	public function applicationMethods($serverTemplate = null, $ajaxTemplate = null)
-	{
-		return Call::communicate('GET', [
-			"organizations/$this->organizationId/system/applicationMethods" => []
-		], $serverTemplate, $ajaxTemplate);
-	}
-
-	/**
 	 * Get a list of all crawlers.
 	 *
 	 * @param string|null $serverTemplate
@@ -57,64 +43,6 @@ class System
 			"organizations/$this->organizationId/system/crawlers" => []
 		], $serverTemplate, $ajaxTemplate);
 	}
-
-	/**
-	 * Get data
-	 *
-	 * @param string|null $serverTemplate
-	 * @param string|null $ajaxTemplate
-	 * @return array
-	 */
-	public function hiringMethods($serverTemplate = null, $ajaxTemplate = null)
-	{
-		return Call::communicate('GET', [
-			"organizations/$this->organizationId/system/hiringMethods" => []
-		], $serverTemplate, $ajaxTemplate);
-	}
-
-	/**
-	 * Get data
-	 *
-	 * @param string|null $serverTemplate
-	 * @param string|null $ajaxTemplate
-	 * @return array
-	 */
-	public function deadlineMethods($serverTemplate = null, $ajaxTemplate = null)
-	{
-		return Call::communicate('GET', [
-			"organizations/$this->organizationId/system/deadlineMethods" => []
-		], $serverTemplate, $ajaxTemplate);
-	}
-
-	/**
-	 * Get data
-	 *
-	 * @param string|null $serverTemplate
-	 * @param string|null $ajaxTemplate
-	 * @return array
-	 */
-	public function getRoles($serverTemplate = null, $ajaxTemplate = null)
-	{
-		return Call::communicate('GET', [
-			"organizations/$this->organizationId/system/roles" => []
-		], $serverTemplate, $ajaxTemplate);
-	}
-
-	/**
-	 * Get a list of all organizations.
-	 *
-	 * @param string|null $serverTemplate
-	 * @param string|null $ajaxTemplate
-	 * @return array
-	 */
-	public function languages($serverTemplate = null, $ajaxTemplate = null)
-	{
-		return Call::communicate('GET', [
-			"organizations/$this->organizationId/system/languages" => []
-		], $serverTemplate, $ajaxTemplate);
-	}
-
-
 
 
 	/**
