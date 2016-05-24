@@ -61,33 +61,40 @@ class Call
 						'Host: ' . parse_url($_ENV['CYJOBAPI_URL'])['host'],
 						'Accept-Language: ' . static::$locale,
 						'Authorization: ' . $_ENV['CYJOBAPI_SIGNED'],
-						'Accept: application/json'
+						'Accept: application/json',
+						'Client-Ip: ' . $_SERVER['REMOTE_ADDR']
 					)
 				]
 			);
 
 			// execute the handler
 			$result = curl_exec($handler);
-			$decoded = json_decode($result, true);
 
+			$decoded = json_decode($result, true);
 			if(empty($decoded))
 			{
-				echo($result);
-				exit('UnparseableResponseException');
+				return [
+					'data' => [
+						[ 'general' => 'UnparseableResponseException' ]
+					],
+					'success' => false
+				];
 			}
 
 			// dispose of the handler
 			curl_close($handler);
 
-			if($serverTemplate and $decoded['success'])
+			if(false === empty($serverTemplate) and $decoded['success'])
 			{
+				$data = isset($serverTemplate['data']) ? $serverTemplate['data'] : [];
+
 				if($single)
 				{
 					ob_start();
 
 					$row = $decoded['data'];
 
-					include("Stubs/Server/$serverTemplate");
+					include("Stubs/Server/" . $serverTemplate['path']);
 
 					$decoded['data'] = ob_get_clean();
 				}
@@ -95,7 +102,7 @@ class Call
 				{
 					foreach($decoded['data'] as &$row)
 					{
-						$row = include("Stubs/Server/$serverTemplate");
+						$row = include("Stubs/Server/" . $serverTemplate['path']);
 					}
 				}
 			}
@@ -104,7 +111,7 @@ class Call
 			{
 				$decoded = array_merge_recursive($decoded, [
 					'meta' => [
-						'template' => include("Stubs/Ajax/$ajaxTemplate")
+						'template' => include("Stubs/Ajax/" . $ajaxTemplate['path'])
 					]
 				]);
 			}

@@ -14,48 +14,73 @@ class Crawlers
 	}
 
 	/**
-	 * Get a list of all crawlers.
+	 * Delete the data
 	 *
-	 * @param int $page
-	 * @param int $rpp
-	 * @param string $sort
-	 * @param string $sort_direction
-	 * @param string|null $serverTemplate
-	 * @param string|null $ajaxTemplate
+	 * @param int $crawlerResultId
 	 * @return array
 	 */
-	public function index($page = 1, $rpp = 10, $sort = 'created_at', $sort_direction = 'desc', $serverTemplate = null, $ajaxTemplate = null)
+	public function deletePost($crawlerResultId)
+	{
+		return Call::communicate('DELETE', [
+			"organizations/$this->organizationId/crawlers/posts/$crawlerResultId" => []
+		]);
+	}
+
+	/**
+	 * Get a list of all crawlers.
+	 *
+	 * @param array $data
+	 * @param array|null $serverTemplate
+	 * @param array|null $ajaxTemplate
+	 * @return array
+	 */
+	public function index(array $data, $serverTemplate = null, $ajaxTemplate = null)
 	{
 		return Call::communicate('GET', [
-			"organizations/$this->organizationId/crawlers" => [
-				'page' => $page,
-				'rpp' => $rpp,
-				'sort' => $sort,
-				'sort_direction' => $sort_direction
-			]
+			"organizations/$this->organizationId/crawlers" => $data
+		], $serverTemplate, $ajaxTemplate);
+	}
+
+	/**
+	 * Get a list of all crawler categories.
+	 *
+	 * @param array|null $serverTemplate
+	 * @param array|null $ajaxTemplate
+	 * @return array
+	 */
+	public function showAll($serverTemplate = null, $ajaxTemplate = null)
+	{
+		return Call::communicate('GET', [
+			"organizations/$this->organizationId/crawlers/all" => []
+		], $serverTemplate, $ajaxTemplate);
+	}
+
+	/**
+	 * Get a list of all crawler categories.
+	 *
+	 * @param array|null $serverTemplate
+	 * @param array|null $ajaxTemplate
+	 * @return array
+	 */
+	public function categories($serverTemplate = null, $ajaxTemplate = null)
+	{
+		return Call::communicate('GET', [
+			"organizations/$this->organizationId/crawlers/categories" => []
 		], $serverTemplate, $ajaxTemplate);
 	}
 
 	/**
 	 * Get a list of all crawler results.
 	 *
-	 * @param int $page
-	 * @param int $rpp
-	 * @param string $sort
-	 * @param string $sort_direction
-	 * @param string|null $serverTemplate
-	 * @param string|null $ajaxTemplate
+	 * @param array $data
+	 * @param array|null $serverTemplate
+	 * @param array|null $ajaxTemplate
 	 * @return array
 	 */
-	public function results($page = 1, $rpp = 10, $sort = 'created_at', $sort_direction = 'desc', $serverTemplate = null, $ajaxTemplate = null)
+	public function results(array $data, $serverTemplate = null, $ajaxTemplate = null)
 	{
 		return Call::communicate('GET', [
-			"organizations/$this->organizationId/crawlers/results" => [
-				'page' => $page,
-				'rpp' => $rpp,
-				'sort' => $sort,
-				'sort_direction' => $sort_direction
-			]
+			"organizations/$this->organizationId/crawlers/results" => $data
 		], $serverTemplate, $ajaxTemplate);
 	}
 
@@ -63,8 +88,8 @@ class Crawlers
 	 * Get a list of all crawler results.
 	 *
 	 * @param int $id
-	 * @param string|null $serverTemplate
-	 * @param string|null $ajaxTemplate
+	 * @param array|null $serverTemplate
+	 * @param array|null $ajaxTemplate
 	 * @return array
 	 */
 	public function findResult($id, $serverTemplate = null, $ajaxTemplate = null)
@@ -72,6 +97,20 @@ class Crawlers
 		return Call::communicate('GET', [
 			"organizations/$this->organizationId/crawlers/results/$id" => []
 		], $serverTemplate, $ajaxTemplate, true);
+	}
+
+	/**
+	 * Patch the data
+	 *
+	 * @param int $crawlerResultId
+	 * @param array $data
+	 * @return array
+	 */
+	public function patchPost($crawlerResultId, array $data)
+	{
+		return Call::communicate('PATCH', [
+			"organizations/$this->organizationId/crawlers/posts/$crawlerResultId" => $data
+		]);
 	}
 
 	/**
@@ -97,6 +136,19 @@ class Crawlers
 	{
 		return Call::communicate('PATCH', [
 			"organizations/$this->organizationId/crawlers/$crawlerId/setInactive" => []
+		]);
+	}
+
+	/**
+	 * Post the data
+	 *
+	 * @param array $data
+	 * @return array
+	 */
+	public function insertPost(array $data)
+	{
+		return Call::communicate('POST', [
+			"organizations/$this->organizationId/crawlers/posts" => $data
 		]);
 	}
 }

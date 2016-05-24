@@ -14,92 +14,96 @@ class Posts
 	}
 
 	/**
+	 * Deactivate the job.
+	 *
+	 * @link https://github.com/CompanYoung/docs.cyjobapi.com/blob/master/endpoints/posts/PATCH_posts_deactivate.md
+	 * @param int $postId
+	 * @return array
+	 */
+	public function delete($postId)
+	{
+		return Call::communicate('DELETE', [
+			"organizations/$this->organizationId/posts/$postId" => []
+		]);
+	}
+
+	/**
+	 * Deactivate the job.
+	 *
+	 * @link https://github.com/CompanYoung/docs.cyjobapi.com/blob/master/endpoints/posts/PATCH_posts_deactivate.md
+	 * @param int $postId
+	 * @return array
+	 */
+	public function deletePositions($postId)
+	{
+		return Call::communicate('DELETE', [
+			"organizations/$this->organizationId/posts/$postId/positions" => []
+		]);
+	}
+
+	/**
+	 * Deactivate the job.
+	 *
+	 * @link https://github.com/CompanYoung/docs.cyjobapi.com/blob/master/endpoints/posts/PATCH_posts_deactivate.md
+	 * @param int $postId
+	 * @return array
+	 */
+	public function deleteGeographies($postId)
+	{
+		return Call::communicate('DELETE', [
+			"organizations/$this->organizationId/posts/$postId/geographies" => []
+		]);
+	}
+
+	/**
 	 * Get a list of all organizations.
 	 *
-	 * @param int $page
-	 * @param int $rpp
-	 * @param string $sort
-	 * @param string $sort_direction
-	 * @param array|null $state
-	 * @param array|null $stateExtra
+	 * @link https://github.com/CompanYoung/docs.cyjobapi.com/blob/master/endpoints/posts/GET_posts.md
+	 * @param array $data
 	 * @param string|null $serverTemplate
 	 * @param string|null $ajaxTemplate
 	 * @return array
 	 */
-	public function index($page = 1, $rpp = 10, $sort = 'created_at', $sort_direction = 'desc', $state = null, $stateExtra = null, $serverTemplate = null, $ajaxTemplate = null)
+	public function index(array $data, $serverTemplate = null, $ajaxTemplate = null)
 	{
 		return Call::communicate('GET', [
-			"organizations/$this->organizationId/posts" => [
-				'page' => $page,
-				'rpp' => $rpp,
-				'sort' => $sort,
-				'sort_direction' => $sort_direction,
-				'state' => $state,
-				'stateExtra' => $stateExtra
-			]
+			"organizations/$this->organizationId/posts" => $data
 		], $serverTemplate, $ajaxTemplate);
 	}
 
 	/**
-	 * Perform a search on the posts.
+	 * Perform a search on the posts
 	 *
-	 * @param string|null $title
-	 * @param string|null $text
-	 * @param array|null $types
-	 * @param array|null $type_names
-	 * @param array|null $categories
-	 * @param array|null $category_names
-	 * @param array|null $positions
-	 * @param array|null $position_names
-	 * @param array|null $countries
-	 * @param array|null $country_names
-	 * @param array|null $regions
-	 * @param array|null $region_names
-	 * @param array|null $geographies
-	 * @param array|null $geography_names
-	 * @param string $deadline_at
-	 * @param string $inactive_at
-	 * @param string $created_at
-	 * @param int $page
-	 * @param int $rpp
-	 * @param string $sort
-	 * @param string $sort_direction
+	 * @link https://github.com/CompanYoung/docs.cyjobapi.com/blob/master/endpoints/posts/GET_posts_search.md
+	 * @param array $data
 	 * @param string|null $serverTemplate
 	 * @param string|null $ajaxTemplate
 	 * @return array
 	 */
-	public function search($title = null, $text = null, $types = null, $type_names = null, $categories = null, $category_names = null, $positions = null, $position_names = null, $countries = null, $country_names = null, $regions = null, $region_names = null, $geographies = null, $geography_names = null, $deadline_at = null, $inactive_at = null, $created_at = null, $page = 1, $rpp = 10, $sort = 'created_at', $sort_direction = 'desc', $serverTemplate = null, $ajaxTemplate = null)
+	public function search(array $data, $serverTemplate = null, $ajaxTemplate = null)
 	{
 		return Call::communicate('GET', [
-			"organizations/$this->organizationId/posts/search" => [
-				'title' => $title,
-				'text' => $text,
-				'types' => $types,
-				'type_names' => $type_names,
-				'categories' => $categories,
-				'category_names' => $category_names,
-				'positions' => $positions,
-				'position_names' => $position_names,
-				'countries' => $countries,
-				'country_names' => $country_names,
-				'regions' => $regions,
-				'region_names' => $region_names,
-				'geographies' => $geographies,
-				'geography_names' => $geography_names,
-				'deadline_at' => $deadline_at,
-				'inactive_at' => $inactive_at,
-				'created_at' => $created_at,
-				'page' => $page,
-				'rpp' => $rpp,
-				'sort' => $sort,
-				'sort_direction' => $sort_direction
-			]
+			"organizations/$this->organizationId/posts/search" => $data
 		], $serverTemplate, $ajaxTemplate);
+	}
+
+	/**
+	 * Get total amount of posts.
+	 *
+	 * @link https://github.com/CompanYoung/docs.cyjobapi.com/blob/master/endpoints/posts/GET_posts_find.md
+	 * @return array
+	 */
+	public function total()
+	{
+		return Call::communicate('GET', [
+			"organizations/$this->organizationId/posts/total" => []
+		]);
 	}
 
 	/**
 	 * Get data
 	 *
+	 * @link https://github.com/CompanYoung/docs.cyjobapi.com/blob/master/endpoints/posts/GET_posts_find.md
 	 * @param int $postId
 	 * @param string|null $serverTemplate
 	 * @param string|null $ajaxTemplate
@@ -113,135 +117,41 @@ class Posts
 	}
 
 	/**
-	 * Post the data
+	 * Get the job statistics.
 	 *
-	 * @param int $company_id
-	 * @param int $application_method_id
-	 * @param string $application_method_content
-	 * @param string $language
-	 * @param string $title
-	 * @param string $html
-	 * @param string $zipcode
-	 * @param string $city
-	 * @param string|null $cover
-	 * @param string $deadline_at
-	 * @param int $hiring_method_id
-	 * @param string $hired_at
-	 * @param string $inactive_at
-	 * @param array $positions
-	 * @param array $geographies
-	 * @return array
-	 */
-	public function insert($company_id, $application_method_id, $application_method_content, $language, $title, $html, $zipcode, $city, $cover = null, $deadline_at, $hiring_method_id, $hired_at, $inactive_at, $positions, $geographies)
-	{
-		return Call::communicate('POST', [
-			"organizations/$this->organizationId/posts" => [
-				'company_id' => $company_id,
-				'application_method_id' => $application_method_id,
-				'application_method_content' => $application_method_content,
-				'language' => $language,
-				'title' => $title,
-				'html' => $html,
-				'zipcode' => $zipcode,
-				'city' => $city,
-				'cover' => $cover ? curl_file_create($cover['filename'], $cover['mimetype'], $cover['postname']) : null,
-				'deadline_at' => $deadline_at,
-				'hiring_method_id' => $hiring_method_id,
-				'hired_at' => $hired_at,
-				'inactive_at' => $inactive_at,
-				'positions' => $positions,
-				'geographies' => $geographies
-			]
-		]);
-	}
-
-	/**
-	 * Patch the data
-	 *
+	 * @link https://github.com/CompanYoung/docs.cyjobapi.com/blob/master/endpoints/posts/PATCH_posts_statistics.md
 	 * @param int $postId
-	 * @param int $company_id
-	 * @param int $application_method_id
-	 * @param string $application_method_content
-	 * @param string $language
-	 * @param string $title
-	 * @param string $html
-	 * @param string $zipcode
-	 * @param string $city
-	 * @param string $deadline_at
-	 * @param int $hiring_method_id
-	 * @param string $hired_at
-	 * @param string $inactive_at
-	 * @param array $positions
-	 * @param array $geographies
+	 * @param string|null $serverTemplate
+	 * @param string|null $ajaxTemplate
 	 * @return array
 	 */
-	public function patchUpdate($postId, $company_id, $application_method_id, $application_method_content, $language, $title, $html, $zipcode, $city, $deadline_at, $hiring_method_id, $hired_at, $inactive_at, $positions, $geographies)
+	public function positions($postId, $serverTemplate = null, $ajaxTemplate = null)
 	{
-		return Call::communicate('PATCH', [
-			"organizations/$this->organizationId/posts/$postId" => [
-				'company_id' => $company_id,
-				'application_method_id' => $application_method_id,
-				'application_method_content' => $application_method_content,
-				'language' => $language,
-				'title' => $title,
-				'html' => $html,
-				'zipcode' => $zipcode,
-				'city' => $city,
-				'deadline_at' => $deadline_at,
-				'hiring_method_id' => $hiring_method_id,
- 				'hired_at' => $hired_at,
-				'inactive_at' => $inactive_at,
-				'positions' => $positions,
-				'geographies' => $geographies
-			]
-		]);
-	}
-
-	/**
-	 * Patch the data
-	 *
-	 * @param int $postId
-	 * @param array $cover
-	 * @return array
-	 */
-	public function patchCover($postId, $cover)
-	{
-		return Call::communicate('POST', [
-			"organizations/$this->organizationId/posts/$postId/cover" => [
-				'cover' => curl_file_create($cover['filename'], $cover['mimetype'], $cover['postname']),
-			]
-		]);
-	}
-
-	/**
-	 * Activate the job.
-	 *
-	 * @param int $postId
-	 * @return array
-	 */
-	public function activate($postId)
-	{
-		return Call::communicate('PATCH', [
-			"organizations/$this->organizationId/posts/$postId/activate" => []
-		]);
-	}
-
-	/**
-	 * Deactivate the job.
-	 *
-	 * @param int $postId
-	 * @return array
-	 */
-	public function deactivate($postId)
-	{
-		return Call::communicate('PATCH', [
-			"organizations/$this->organizationId/posts/$postId/deactivate" => []
-		]);
+		return Call::communicate('GET', [
+			"organizations/$this->organizationId/posts/$postId/positions" => []
+		], $serverTemplate, $ajaxTemplate);
 	}
 
 	/**
 	 * Get the job statistics.
 	 *
+	 * @link https://github.com/CompanYoung/docs.cyjobapi.com/blob/master/endpoints/posts/PATCH_posts_statistics.md
+	 * @param int $postId
+	 * @param string|null $serverTemplate
+	 * @param string|null $ajaxTemplate
+	 * @return array
+	 */
+	public function geographies($postId, $serverTemplate = null, $ajaxTemplate = null)
+	{
+		return Call::communicate('GET', [
+			"organizations/$this->organizationId/posts/$postId/geographies" => []
+		], $serverTemplate, $ajaxTemplate);
+	}
+
+	/**
+	 * Get the job statistics.
+	 *
+	 * @link https://github.com/CompanYoung/docs.cyjobapi.com/blob/master/endpoints/posts/PATCH_posts_statistics.md
 	 * @param int $postId
 	 * @param string|null $serverTemplate
 	 * @param string|null $ajaxTemplate
@@ -252,5 +162,187 @@ class Posts
 		return Call::communicate('GET', [
 			"organizations/$this->organizationId/posts/$postId/statistics" => []
 		], $serverTemplate, $ajaxTemplate);
+	}
+
+	/**
+	 * Get the job statistics.
+	 *
+	 * @link https://github.com/CompanYoung/docs.cyjobapi.com/blob/master/endpoints/posts/PATCH_posts_statistics.md
+	 * @param int $postId
+	 * @param string $token
+	 * @param string|null $serverTemplate
+	 * @param string|null $ajaxTemplate
+	 * @return array
+	 */
+	public function verifyToken($postId, $token, $serverTemplate = null, $ajaxTemplate = null)
+	{
+		return Call::communicate('GET', [
+			"organizations/$this->organizationId/posts/$postId/verify-token" => [
+				'token' => $token
+			]
+		], $serverTemplate, $ajaxTemplate);
+	}
+
+	/**
+	 * Post the data
+	 *
+	 * @link https://github.com/CompanYoung/docs.cyjobapi.com/blob/master/endpoints/posts/GET_posts_find.md
+	 * @param array $data
+	 * @param array $cover
+	 * @param array $attachments
+	 * @return array
+	 */
+	public function insert(array $data, array $cover = [], array $attachments = [])
+	{
+		if(isset($attachments['tmp_name']))
+		{
+			$attachments = [$attachments];
+		}
+
+		$attachmentResult = [];
+
+		foreach($attachments as $attachment)
+		{
+			$attachmentResult[] = curl_file_create($attachment['tmp_name'], $attachment['type'], $attachment['name']);
+		}
+
+		return Call::communicate('POST', [
+			"organizations/$this->organizationId/posts" => array_merge($data, [
+				'cover' => $cover ? curl_file_create($cover['tmp_name'], $cover['type'], $cover['name']) : null,
+				'attachments' => $attachmentResult ? $attachmentResult : null
+			])
+		]);
+	}
+
+	/**
+	 * Post the data
+	 *
+	 * @link https://github.com/CompanYoung/docs.cyjobapi.com/blob/master/endpoints/posts/GET_posts_find.md
+	 * @param int $postId
+	 * @return array
+	 */
+	public function insertPosition($postId, $positionId)
+	{
+		return Call::communicate('POST', [
+			"organizations/$this->organizationId/posts/$postId/position" => [
+				'id' => $positionId
+			]
+		]);
+	}
+
+	/**
+	 * Post the data
+	 *
+	 * @link https://github.com/CompanYoung/docs.cyjobapi.com/blob/master/endpoints/posts/GET_posts_find.md
+	 * @param int $postId
+	 * @param array $positions
+	 * @return array
+	 */
+	public function insertPositions($postId, array $positions)
+	{
+		return Call::communicate('POST', [
+			"organizations/$this->organizationId/posts/$postId/positions" => [
+				'id' => $positions
+			]
+		]);
+	}
+
+
+
+
+	/**
+	 * Post the data
+	 *
+	 * @link https://github.com/CompanYoung/docs.cyjobapi.com/blob/master/endpoints/posts/GET_posts_find.md
+	 * @param int $postId
+	 * @return array
+	 */
+	public function insertGeography($postId, $geographyId)
+	{
+		return Call::communicate('POST', [
+			"organizations/$this->organizationId/posts/$postId/geography" => [
+				'id' => $geographyId
+			]
+		]);
+	}
+
+	/**
+	 * Post the data
+	 *
+	 * @link https://github.com/CompanYoung/docs.cyjobapi.com/blob/master/endpoints/posts/GET_posts_find.md
+	 * @param int $postId
+	 * @param array $geographies
+	 * @return array
+	 */
+	public function insertGeographies($postId, array $geographies)
+	{
+		return Call::communicate('POST', [
+			"organizations/$this->organizationId/posts/$postId/geographies" => [
+				'id' => $geographies
+			]
+		]);
+	}
+
+	/**
+	 * Increment click.
+	 *
+	 * @link https://github.com/CompanYoung/docs.cyjobapi.com/blob/master/endpoints/posts/POST_posts_increment_apply_click.md
+	 * @param int $postId
+	 * @param int|null $identifier
+	 * @return array
+	 */
+	public function incrementApplyClick($postId, $identifier = null)
+	{
+		return Call::communicate('POST', [
+			"organizations/$this->organizationId/posts/$postId/click" => [
+				'identifier' => $identifier
+			]
+		]);
+	}
+
+	/**
+	 * Patch the data
+	 *
+	 * @link https://github.com/CompanYoung/docs.cyjobapi.com/blob/master/endpoints/posts/PATCH_posts_update.md
+	 * @param int $postId
+	 * @param array $data
+	 * @return array
+	 */
+	public function update($postId, array $data)
+	{
+		return Call::communicate('PATCH', [
+			"organizations/$this->organizationId/posts/$postId" => $data
+		]);
+	}
+
+	/**
+	 * Update the cover
+	 *
+	 * @link https://github.com/CompanYoung/docs.cyjobapi.com/blob/master/endpoints/posts/POST_posts_update_cover.md
+	 * @param int $postId
+	 * @param array $cover
+	 * @return array
+	 */
+	public function updateCover($postId, $cover)
+	{
+		return Call::communicate('POST', [
+			"organizations/$this->organizationId/posts/$postId/cover" => [
+				'cover' => curl_file_create($cover['tmp_name'], $cover['type'], $cover['name'])
+			]
+		]);
+	}
+
+	/**
+	 * Activate the job
+	 *
+	 * @link https://github.com/CompanYoung/docs.cyjobapi.com/blob/master/endpoints/posts/PATCH_posts_activate.md
+	 * @param int $postId
+	 * @return array
+	 */
+	public function activate($postId)
+	{
+		return Call::communicate('PATCH', [
+			"organizations/$this->organizationId/posts/$postId/activate" => []
+		]);
 	}
 }
