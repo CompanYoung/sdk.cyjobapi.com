@@ -76,7 +76,7 @@ class Api
 		require_once('Databases/System.php');
 		require_once('Databases/Users.php');
 
-		if($specialSlug and in_array(env('DOMAIN'), [ 'cyjobapi.dev', 'cyjobapi.com' ]))
+		if($specialSlug and in_array(env('DOMAIN'), [ 'cyjobapi.dev', 'cyjobapi.com', 'nextcyjobapi.com' ]))
 		{
 			$_ENV['CYJOBAPI_SIGNED'] = '4bf4210022fb66494edb587aff5b30fa';
 
@@ -122,7 +122,6 @@ class Api
 		{
 			$this->administrators = new Databases\Administrators($this->organizationId);
 		}
-
 		return $this->administrators;
 	}
 

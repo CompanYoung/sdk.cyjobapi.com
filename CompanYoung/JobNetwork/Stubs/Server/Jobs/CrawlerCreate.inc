@@ -69,6 +69,16 @@ endif;
 							</div>
 						</div>
 					</div>
+					<div class="col-md-12 border crawler-logo">
+						<div class="form-group row">
+							<div class="col-sm-2">
+								<img id="crawler_logo_preview" src="http://placehold.it/100x100" alt="your image" />
+							</div>
+							<div class="col-sm-2">
+								<input type='file' id="crawler_logo" name="crawler_logo" />
+							</div>
+						</div>
+					</div>
 
 
 					<div class="col-md-6 border">

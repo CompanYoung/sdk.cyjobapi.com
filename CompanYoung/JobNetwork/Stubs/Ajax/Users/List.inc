@@ -15,7 +15,6 @@ return '
             </button>
             <ul class="dropdown-menu dropdown-menu-right" role="menu">
                 <li role="presentation"><a role="menuitem" tabindex="-1" class="statistics">' . trans('general.send_new_password') . '</a></li>
-                <li role="presentation"><a role="menuitem" tabindex="-1" class="edit" href="/users/{id}/user-info">' . trans('general.edit') . '</a></li>
                 <li class="divider"></li>
 				<li role="presentation"><a role="menuitem" tabindex="-1" class="{activateState}">{activateText}</a></li>
             </ul>
@@ -23,3 +22,4 @@ return '
 	</td>
 </tr>
 ';
+//<li role="presentation"><a role="menuitem" tabindex="-1" class="edit" href="/users/{id}/user-info">' . trans('general.edit') . '</a></li>

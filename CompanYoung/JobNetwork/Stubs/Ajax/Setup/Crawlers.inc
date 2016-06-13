@@ -2,7 +2,7 @@
 
 return '
 <tr data-id="{id}" class="{classStatus}">
-    <td><img src="//' . getenv('IMAGE_DOMAIN') . '/crawlers/pictures/logos/{media_id}.jpg"></td>
+    <td><img class="crawler-img" src="//' . getenv('IMAGE_DOMAIN') . '/crawlers/pictures/logos/{media_id}.jpg"></td>
     <td>{name}</td>
     <td>{updated_at}</td>
     <td>{status}</td>

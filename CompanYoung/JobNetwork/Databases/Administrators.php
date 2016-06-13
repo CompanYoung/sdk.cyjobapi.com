@@ -10,7 +10,7 @@ class Administrators
 
     function __construct($organizationId)
     {
-
+        $this->organizationId = $organizationId;
     }
 
     /**
@@ -29,6 +29,15 @@ class Administrators
         ]);
     }
 
+    public function sendInviteMail($email, $newAdmin)
+    {
+        return Call::communicate('POST', [
+            "organizations/$this->organizationId/administrators/send-invite-mail" => [
+                'email' => $email,
+                'new_admin' => $newAdmin
+            ]
+        ]);
+    }
     /**
      * Get data
      *
@@ -42,7 +51,7 @@ class Administrators
     {
         return Call::communicate('POST', [
             "administrators/reset-password" => [
-                'token' => $token,
+                'pass_token' => $token,
                 'password' => $password,
                 'password_confirmation' => $passwordConfirmation,
             ]

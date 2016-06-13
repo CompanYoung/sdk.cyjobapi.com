@@ -106,11 +106,15 @@ class Crawlers
 	 * @param array $data
 	 * @return array
 	 */
-	public function patchPost($crawlerResultId, array $data)
+	public function patchPost($crawlerResultId, array $data, array $logo = null)
 	{
 		return Call::communicate('PATCH', [
-			"organizations/$this->organizationId/crawlers/posts/$crawlerResultId" => $data
+			"organizations/$this->organizationId/crawlers/posts/$crawlerResultId" => array_merge($data, [
+				'logo' => $logo ? curl_file_create($logo['tmp_name'], $logo['type'], $logo['name']) : null
+			])
 		]);
+
+
 	}
 
 	/**
@@ -125,7 +129,6 @@ class Crawlers
 			"organizations/$this->organizationId/crawlers/$crawlerId/setActive" => []
 		]);
 	}
-
 	/**
 	 * Set the crawler inactive.
 	 *
@@ -145,10 +148,12 @@ class Crawlers
 	 * @param array $data
 	 * @return array
 	 */
-	public function insertPost(array $data)
+	public function insertPost(array $data, array $logo = null)
 	{
 		return Call::communicate('POST', [
-			"organizations/$this->organizationId/crawlers/posts" => $data
+			"organizations/$this->organizationId/crawlers/posts" => array_merge($data, [
+				'logo' => $logo ? curl_file_create($logo['tmp_name'], $logo['type'], $logo['name']) : null
+			])
 		]);
 	}
 }
