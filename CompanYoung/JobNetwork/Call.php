@@ -3,6 +3,7 @@
 namespace App\CompanYoung;
 
 use App\CompanYoung\JobNetwork\Databases;
+use Illuminate\Support\Facades\Auth;
 
 class Call
 {
@@ -62,13 +63,16 @@ class Call
 						'Accept-Language: ' . static::$locale,
 						'Authorization: ' . $_ENV['CYJOBAPI_SIGNED'],
 						'Accept: application/json',
-						'Client-Ip: ' . $_SERVER['REMOTE_ADDR']
+						'Client-Ip: ' . $_SERVER['REMOTE_ADDR'],
+						'AdminId: ' . (Auth::check() ? Auth::user()->id : null),
 					)
 				]
 			);
 
 			// execute the handler
 			$result = curl_exec($handler);
+
+//			dump($result);
 
 			$decoded = json_decode($result, true);
 			if(empty($decoded))
@@ -109,6 +113,8 @@ class Call
 
 			if($ajaxTemplate and $decoded['success'])
 			{
+				$data = isset($ajaxTemplate['data']) ? $ajaxTemplate['data'] : [];
+
 				$decoded = array_merge_recursive($decoded, [
 					'meta' => [
 						'template' => include("Stubs/Ajax/" . $ajaxTemplate['path'])

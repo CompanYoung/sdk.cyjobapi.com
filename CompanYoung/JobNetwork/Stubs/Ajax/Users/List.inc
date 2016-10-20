@@ -1,24 +1,20 @@
 <?php
 
 return '
-<tr data-job="{id}">
-    <td><img src="{picture.size50}" class="img-circle" style="width:50px;max-height:50px;"> {first_name} {last_name}</td>
+<tr data-id="{id}" class="clickable">
+    <td>
+     <input type="checkbox" name="all_users" value="{id}" id="person_{id}" class="inline list_checkbox">
+                            <label for="person_{id}" class="radiobutton_label">
+                                <span></span>
+                                <div class="radio_circle"></div>
+                            </label>
+</td>
+    <td><div class="msg-note {message_read}"></div> <img src="{picture.size50}" class="img-circle" style="width:50px;max-height:50px;"> {first_name} {last_name}</td>
     <td>{created_at}</td>
     <td>{jobagents}</td>
     <td>{companies}</td>
     <td>{status}</td>
 	<td>
-		<div class="dropdown">
-            <button class="btn dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">
-                ' . trans('general.actions') . '
-                <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu dropdown-menu-right" role="menu">
-                <li role="presentation"><a role="menuitem" tabindex="-1" class="statistics">' . trans('general.send_new_password') . '</a></li>
-                <li class="divider"></li>
-				<li role="presentation"><a role="menuitem" tabindex="-1" class="{activateState}">{activateText}</a></li>
-            </ul>
-        </div>
 	</td>
 </tr>
 ';

@@ -1,9 +1,9 @@
 <?php
 
 return '
-<tr data-id="{id}">
+<tr data-id="{id}" class="clickable">
     <td><img src="{company.logo.size50}" class="img-circle" style="width:50px;max-height:50px;"> </td>
-	<td><a href="/jobs/{id}/company-info">{title}</a></td>
+	<td>{title}</td>
     <td>{company.name}</td>
     <td>{status}</td>
     <td>{created_at}</td>
@@ -20,6 +20,8 @@ return '
                 <li role="presentation"><a role="menuitem" tabindex="-1" class="edit" href="/jobs/{id}/company-info">' . trans('general.edit') . '</a></li>
                 <li class="divider"></li>
 				<li role="presentation"><a role="menuitem" tabindex="-1" class="{activateState}">{activateText}</a></li>
+				<li role="presentation"><a role="menuitem" tabindex="-1" class="delete">'. trans('general.delete') .'</a></li>
+
             </ul>
         </div>
     </td>

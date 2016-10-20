@@ -32,14 +32,17 @@ return '
             </div>
 
 			<div class="buttons">
-			<div class="btn-left col-md-6">
-									<a class="btn marg-r-12" href="//{subdomain}.' . env('DOMAIN') . '/settings/organization">' . trans('general.edit') . '</a>
-						<a class="btn btn-connect {hiddenState}" data-unsubscribed="{unsubscribedText}" data-subscribed="{subscribedText}" data-id="{id}">{connectedText}</a>
-			</div>
-			<div class="btn-right col-md-6">
+			    <div class="btn-left col-md-6">
+									<a class="btn pull-left radius-right-none" href="//{subdomain}.' . env('DOMAIN') . '/settings/organization">' . trans('general.edit') . '</a>
+									<a class="btn marg-r-12 radius-left-none admin-settings" data-id="{id}">' . trans('general.admin_settings') . '</a>
 
-			            <a class="btn pull-right {multiBtnColor} {subscribeClass}" {multiBtnHref}  data-id="{id}">{multiBtnText}</a>
-			</div>
+			    </div>
+			    <div class="btn-right col-md-6">
+
+			            <a class="btn pull-right  {multiBtnColor} {subscribeClass}" {multiBtnHref}  data-id="{id}">{multiBtnText}</a>
+			            						<a class="btn marg-r-12 btn-connect pull-right {hiddenState}" data-unsubscribed="{unsubscribedText}" data-subscribed="{subscribedText}" data-id="{id}">{connectedText}</a>
+
+			    </div>
 			</div>
 
         </div>

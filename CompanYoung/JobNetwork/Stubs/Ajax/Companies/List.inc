@@ -16,6 +16,7 @@ return '
                 <li role="presentation"><a role="menuitem" tabindex="-1" href="/companies/{id}/company-info">' . trans('general.edit') . '</a></li>
                 <li class="divider"></li>
 				<li role="presentation"><a role="menuitem" tabindex="-1" class="{activateState}">{activateText}</a></li>
+				<li role="presentation"><a role="menuitem" tabindex="-1" class="delete">'. trans('general.delete') .'</a></li>
             </ul>
         </div>
     </td>

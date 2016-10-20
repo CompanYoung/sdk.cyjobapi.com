@@ -14,7 +14,7 @@ class Posts
 	}
 
 	/**
-	 * Deactivate the job.
+	 * Delete the job.
 	 *
 	 * @link https://github.com/CompanYoung/docs.cyjobapi.com/blob/master/endpoints/posts/PATCH_posts_deactivate.md
 	 * @param int $postId
@@ -24,6 +24,20 @@ class Posts
 	{
 		return Call::communicate('DELETE', [
 			"organizations/$this->organizationId/posts/$postId" => []
+		]);
+	}
+
+	/**
+	 * Deactivate the job.
+	 *
+	 * @link https://github.com/CompanYoung/docs.cyjobapi.com/blob/master/endpoints/posts/PATCH_posts_deactivate.md
+	 * @param int $postId
+	 * @return array
+	 */
+	public function deactivate($postId)
+	{
+		return Call::communicate('PATCH', [
+			"organizations/$this->organizationId/posts/$postId/deactivate" => []
 		]);
 	}
 
@@ -312,6 +326,21 @@ class Posts
 	{
 		return Call::communicate('PATCH', [
 			"organizations/$this->organizationId/posts/$postId" => $data
+		]);
+	}
+
+	/**
+	 * Patch the data
+	 *
+	 * @link https://github.com/CompanYoung/docs.cyjobapi.com/blob/master/endpoints/posts/PATCH_posts_update.md
+	 * @param int $postId
+	 * @param array $data
+	 * @return array
+	 */
+	public function extend($postId)
+	{
+		return Call::communicate('PATCH', [
+			"organizations/$this->organizationId/posts/$postId/extend" => []
 		]);
 	}
 

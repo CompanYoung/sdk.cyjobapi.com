@@ -29,6 +29,11 @@ class Api
 	private $contacts;
 
 	/**
+	 * @var Databases\Conversation
+	 */
+	private $conversation;
+
+	/**
 	 * @var Databases\Crawlers
 	 */
 	private $crawlers;
@@ -59,6 +64,16 @@ class Api
 	private $system;
 
 	/**
+	 * @var Databases\Segmentations
+	 */
+	private $segmentations;
+
+	/**
+	 * @var Databases\Fields
+	 */
+	private $fields;
+
+	/**
 	 * @var Databases\Users
 	 */
 	private $users;
@@ -68,13 +83,17 @@ class Api
 		require_once('Call.php');
 		require_once('Databases/Companies.php');
 		require_once('Databases/Contacts.php');
+		require_once('Databases/Conversation.php');
 		require_once('Databases/Crawlers.php');
 		require_once('Databases/Emails.php');
 		require_once('Databases/Jobagents.php');
 		require_once('Databases/Organizations.php');
 		require_once('Databases/Posts.php');
 		require_once('Databases/System.php');
+		require_once('Databases/Segmentations.php');
 		require_once('Databases/Users.php');
+		require_once('Databases/Fields.php');
+
 
 		if($specialSlug and in_array(env('DOMAIN'), [ 'cyjobapi.dev', 'cyjobapi.com', 'nextcyjobapi.com' ]))
 		{
@@ -146,6 +165,19 @@ class Api
 		if(empty($this->contacts))
 		{
 			$this->contacts = new Databases\Contacts($this->organizationId);
+		}
+
+		return $this->contacts;
+	}
+
+	/**
+	 * @return Databases\Conversation
+	 */
+	public function conversation()
+	{
+		if(empty($this->contacts))
+		{
+			$this->contacts = new Databases\Conversation($this->organizationId);
 		}
 
 		return $this->contacts;
@@ -230,6 +262,19 @@ class Api
 	}
 
 	/**
+	 * @return Databases\Segmentations
+	 */
+	public function segmentations()
+	{
+		if(empty($this->segmentations))
+		{
+			$this->system = new Databases\Segmentations($this->organizationId);
+		}
+
+		return $this->system;
+	}
+
+	/**
 	 * @return Databases\Users
 	 */
 	public function users()
@@ -240,5 +285,18 @@ class Api
 		}
 
 		return $this->users;
+	}
+
+	/**
+	 * @return Databases\Fields
+	 */
+	public function fields()
+	{
+		if(empty($this->fields))
+		{
+			$this->fields = new Databases\Fields($this->organizationId);
+		}
+
+		return $this->fields;
 	}
 }

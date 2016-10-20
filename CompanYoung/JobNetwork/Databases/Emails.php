@@ -115,4 +115,77 @@ class Emails
 			"organizations/$this->organizationId/email-templates/$typeId" => $data
 		]);
 	}
+
+	/**
+	 * Count all emails from jobagents
+	 *
+	 * @param int $typeId
+	 * @param array $data
+	 * @return array
+	 */
+	public function countJobAgents()
+	{
+		return Call::communicate('GET', [
+			"organizations/$this->organizationId/email/jobagents" => []
+		]);
+	}
+
+	/**
+	 * Count all emails from jobagents
+	 *
+	 * @param int $typeId
+	 * @param array $data
+	 * @return array
+	 */
+	public function countDirectMails()
+	{
+		return Call::communicate('GET', [
+			"organizations/$this->organizationId/email/count-direct-mails" => []
+		]);
+	}
+
+	/**
+	 * Count all emails from jobagents
+	 *
+	 * @param int $typeId
+	 * @param array $data
+	 * @return array
+	 */
+	public function getLatestDirectMails()
+	{
+		return Call::communicate('GET', [
+			"organizations/$this->organizationId/email/get-latest-direct-mails" => []
+		]);
+	}
+
+
+
+
+	/**
+	 * Get recipients stats by date
+	 *
+	 * @param int $typeId
+	 * @param array $data
+	 * @return array
+	 */
+	public function recipientsStats(array $data)
+	{
+		return Call::communicate('GET', [
+			"organizations/$this->organizationId/email/recipientsStats" => $data
+		]);
+	}
+
+	/**
+	 * Get recipients stats by date
+	 *
+	 * @param int $typeId
+	 * @param array $data
+	 * @return array
+	 */
+	public function showMailHtml(array $data)
+	{
+		return Call::communicate('GET', [
+			"organizations/$this->organizationId/email/show" => $data
+		]);
+	}
 }

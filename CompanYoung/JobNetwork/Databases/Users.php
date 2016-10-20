@@ -28,6 +28,48 @@ class Users
 	}
 
 	/**
+	 * Get a list of all organizations.
+	 *
+	 * @link https://github.com/CompanYoung/docs.cyjobapi.com/blob/master/endpoints/users/GET_users_index.md
+	 * @param int $userId
+	 * @return array
+	 */
+	public function deleteBulk(array $data)
+	{
+		return Call::communicate('DELETE', [
+			"organizations/$this->organizationId/users/bulk" => $data
+		]);
+	}
+
+	/**
+	 * Get a list of all organizations.
+	 *
+	 * @link https://github.com/CompanYoung/docs.cyjobapi.com/blob/master/endpoints/users/GET_users_index.md
+	 * @param int $userId
+	 * @return array
+	 */
+	public function deactivate($userId)
+	{
+		return Call::communicate('PATCH', [
+			"organizations/$this->organizationId/users/$userId/deactivate" => []
+		]);
+	}
+
+	/**
+	 * Get a list of all organizations.
+	 *
+	 * @link https://github.com/CompanYoung/docs.cyjobapi.com/blob/master/endpoints/users/GET_users_index.md
+	 * @param int $userId
+	 * @return array
+	 */
+	public function activate($userId)
+	{
+		return Call::communicate('PATCH', [
+			"organizations/$this->organizationId/users/$userId/activate" => []
+		]);
+	}
+
+	/**
 	 * unfollow
 	 *
 	 * @link https://github.com/CompanYoung/docs.cyjobapi.com/blob/master/endpoints/users/POST_users_unfollow.md
@@ -90,6 +132,22 @@ class Users
 	{
 		return Call::communicate('GET', [
 			"organizations/$this->organizationId/users/$userId" => []
+		], $serverTemplate, $ajaxTemplate);
+	}
+
+	/**
+	 * Get data
+	 *
+	 * @link https://github.com/CompanYoung/docs.cyjobapi.com/blob/master/endpoints/users/POST_users_find.md
+	 * @param int $userId
+	 * @param string|null $serverTemplate
+	 * @param string|null $ajaxTemplate
+	 * @return array
+	 */
+	public function userActivities($userId, $serverTemplate = null, $ajaxTemplate = null)
+	{
+		return Call::communicate('GET', [
+			"organizations/$this->organizationId/users/$userId/activities" => []
 		], $serverTemplate, $ajaxTemplate);
 	}
 
@@ -234,7 +292,7 @@ class Users
 	public function insert(array $data, array $picture = [])
 	{
 		return Call::communicate('POST', [
-			"organizations/$this->organizationId/users" => array_merge($data, [
+			"organizations/$this->organizationId/users" => array_merge($data[0], [
 				'picture' => $picture ? curl_file_create($picture['tmp_name'], $picture['type'], $picture['name']) : null
 			])
 		]);
@@ -253,6 +311,20 @@ class Users
 			"organizations/$this->organizationId/users/send-reset-link" => [
 				'email' => $email
 			]
+		]);
+	}
+
+	/**
+	 * Send bulk direct mail
+	 *
+	 * @link https://github.com/CompanYoung/docs.cyjobapi.com/blob/master/endpoints/users/POST_users_send_reset_link.md
+	 * @param array $data
+	 * @return array
+	 */
+	public function sendBulkMail(array $data)
+	{
+		return Call::communicate('POST', [
+			"organizations/$this->organizationId/users/send-bulk-mail" => $data
 		]);
 	}
 

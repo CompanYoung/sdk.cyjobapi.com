@@ -14,6 +14,40 @@ class Organizations
 	}
 
 	/**
+	 * Show an organization by ID
+	 *
+	 * @param integer $id
+	 * @param array|null $serverTemplate
+	 * @param array|null $ajaxTemplate
+	 * @return array
+	 */
+	public function show($id, $serverTemplate = null, $ajaxTemplate = null)
+	{
+		return Call::communicate('GET', [
+			"organizations/$id/show" => [
+			]], $serverTemplate, $ajaxTemplate);
+	}
+
+	public function store($data)
+	{
+		return Call::communicate('GET', [
+			"organizations/storeOrganization" => $data], null, null);
+	}
+
+	public function setStatus($id ,$status){
+		return Call::communicate('GET', [
+			"organizations/$id/setStatus" => [
+				'status' => $status
+			]]);
+	}
+
+	public function organizationStats($id){
+		return Call::communicate('GET', [
+			"organizations/$id/organizationGoal" => [
+			]]);
+	}
+
+	/**
 	 * Delete position.
 	 *
 	 * @param integer $id
@@ -29,6 +63,9 @@ class Organizations
 			]
 		]);
 	}
+
+
+
 
 	/**
 	 * Delete category.
@@ -236,10 +273,24 @@ class Organizations
 		], $serverTemplate, $ajaxTemplate);
 	}
 
+	public function searchCountries($src)
+	{
+		return Call::communicate('GET', [
+			"organizations/$this->organizationId/countries/search" => $src
+		], null, null);
+	}
+
 	public function geographies($serverTemplate = null, $ajaxTemplate = null)
 	{
 		return Call::communicate('GET', [
 			"organizations/$this->organizationId/geographies" => []
+		], $serverTemplate, $ajaxTemplate);
+	}
+
+	public function geographiesById($serverTemplate = null, $ajaxTemplate = null)
+	{
+		return Call::communicate('GET', [
+			"organizations/$this->organizationId/geographiesById" => []
 		], $serverTemplate, $ajaxTemplate);
 	}
 
@@ -261,6 +312,13 @@ class Organizations
 	{
 		return Call::communicate('GET', [
 			"organizations/$this->organizationId/positions" => []
+		], $serverTemplate, $ajaxTemplate);
+	}
+
+	public function positionsById($serverTemplate = null, $ajaxTemplate = null)
+	{
+		return Call::communicate('GET', [
+			"organizations/$this->organizationId/positionsById" => []
 		], $serverTemplate, $ajaxTemplate);
 	}
 
@@ -562,4 +620,60 @@ class Organizations
 			]
 		]);
 	}
+
+	/**
+	 * Get dashboard info
+	 *
+	 * @param string $name
+	 * @return array
+	 */
+	public function getDashBoardInfo()
+	{
+		return Call::communicate('get', [
+			"organizations/$this->organizationId/dashboard-info" => []
+		]);
+	}
+
+	/**
+	 * Save frontend settings
+	 *
+	 * @param string $name
+	 * @return array
+	 */
+	public function saveFrontendSetting($data)
+	{
+		return Call::communicate('POST', [
+			"organizations/$this->organizationId/save-frontend-setting" => $data
+		]);
+	}
+
+	/**
+	 * Save frontend style
+	 *
+	 * @param string $name
+	 * @return array
+	 */
+	public function saveFrontendStyle($data)
+	{
+		return Call::communicate('POST', [
+			"organizations/$this->organizationId/save-frontend-style" => $data
+		]);
+	}
+
+	/**
+	 * Generate and return token to job feed
+	 *
+	 * @param string $name
+	 * @return array
+	 */
+	public function generateToken()
+	{
+		return Call::communicate('GET', [
+			"organizations/$this->organizationId/generate-token" => []
+		]);
+	}
+
+
+
+
 }

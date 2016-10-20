@@ -59,6 +59,36 @@ class System
 	}
 
 	/**
+	 * Get a list of all crawlers.
+	 *
+	 * @param string|null $serverTemplate
+	 * @param string|null $ajaxTemplate
+	 * @return array
+	 */
+	public function allCrawlers($serverTemplate = null, $ajaxTemplate = null)
+	{
+		return Call::communicate('GET', [
+			"/system/crawlerids" => []
+		], $serverTemplate, $ajaxTemplate);
+	}
+
+	/**
+	 * Get a list of all crawlers.
+	 *
+	 * @param string|null $serverTemplate
+	 * @param string|null $ajaxTemplate
+	 * @return array
+	 */
+	public function getCrawlerStat($id,$serverTemplate = null, $ajaxTemplate = null)
+	{
+		return Call::communicate('GET', [
+			"/system/crawlerstat" => [
+				'id' => $id
+			]
+		], $serverTemplate, $ajaxTemplate);
+	}
+
+	/**
 	 * Get data
 	 *
 	 * @param string|null $serverTemplate

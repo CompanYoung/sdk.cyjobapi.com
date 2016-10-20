@@ -28,6 +28,34 @@ class Companies
 	}
 
 	/**
+	 * Deactivate the company by ID
+	 *
+	 * @link https://github.com/CompanYoung/docs.cyjobapi.com/blob/master/endpoints/companies/DELETE_delete.md
+	 * @param int $companyId
+	 * @return array
+	 */
+	public function deactivate($companyId)
+	{
+		return Call::communicate('PATCH', [
+			"organizations/$this->organizationId/companies/$companyId/deactivate" => []
+		]);
+	}
+
+	/**
+	 * Activate the company by ID
+	 *
+	 * @link https://github.com/CompanYoung/docs.cyjobapi.com/blob/master/endpoints/posts/PATCH_activate.md
+	 * @param int $postId
+	 * @return array
+	 */
+	public function activate($companyId)
+	{
+		return Call::communicate('PATCH', [
+			"organizations/$this->organizationId/companies/$companyId/activate" => []
+		]);
+	}
+
+	/**
 	 * Get a list of all companies
 	 *
 	 * @link https://github.com/CompanYoung/docs.cyjobapi.com/blob/master/endpoints/companies/GET_index.md
@@ -258,17 +286,4 @@ class Companies
 		]);
 	}
 
-	/**
-	 * Activate the job
-	 *
-	 * @link https://github.com/CompanYoung/docs.cyjobapi.com/blob/master/endpoints/posts/PATCH_activate.md
-	 * @param int $postId
-	 * @return array
-	 */
-	public function activate($postId)
-	{
-		return Call::communicate('PATCH', [
-			"organizations/$this->organizationId/companies/$postId/activate" => []
-		]);
-	}
 }
